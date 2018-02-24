@@ -1,5 +1,3 @@
-// metakirby5
-
 #include <pebble.h>
 #include "gbitmap_color_palette_manipulator.h"
 
