@@ -38,6 +38,12 @@
                 "type": "font"
             },
             {
+                "characterRegex": "[:0-9A-Za-z°]",
+                "file": "fonts/HMPoketchAlpha.ttf",
+                "name": "FONT_POKETCH_ALPHA_12",
+                "type": "font"
+            },
+            {
                 "file": "images/pika.png",
                 "name": "IMAGE_PIKA_BG",
                 "type": "png"
