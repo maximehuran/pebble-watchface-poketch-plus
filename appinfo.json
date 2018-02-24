@@ -1,6 +1,6 @@
 {
     "companyName": "maxime.huran@gmail.com",
-    "longName": "Pok\u00e9tch+",
+    "longName": "Pok\u00e9tch++",
     "projectType": "native",
     "resources": {
         "media": [
@@ -51,10 +51,16 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Pok\u00e9tch+",
+    "shortName": "Pok\u00e9tch++",
     "uuid": "0cc36677-1628-4e9e-ac38-f2c570c81d31",
-    "versionLabel": "4.0",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
-    }
+    },
+    "targetPlatforms": [
+        "aplite",
+        "basalt",
+        "chalk",
+        "diorite"
+    ]
 }

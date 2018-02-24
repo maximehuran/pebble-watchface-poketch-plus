@@ -1,4 +1,4 @@
-# Pokétch+
+# Pokétch++
 
 Pokétch++ is a fork of metakirby5 Pokétch+
 
