@@ -1,5 +1,5 @@
 {
-    "companyName": "metakirby5@gmail.com",
+    "companyName": "maxime.huran@gmail.com",
     "longName": "Pok\u00e9tch+",
     "projectType": "native",
     "resources": {
@@ -47,7 +47,7 @@
     "sdkVersion": "3",
     "shortName": "Pok\u00e9tch+",
     "uuid": "003eec80-ab22-4cab-b44b-263f524e3a63",
-    "versionLabel": "3.0",
+    "versionLabel": "4.0",
     "watchapp": {
         "watchface": true
     }

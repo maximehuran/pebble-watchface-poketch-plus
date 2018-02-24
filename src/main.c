@@ -3,11 +3,15 @@
 #include <pebble.h>
 #include "gbitmap_color_palette_manipulator.h"
 
-// All time changes
-#define TICK_UNIT       (MINUTE_UNIT | HOUR_UNIT | DAY_UNIT)
-
+// Params
 #define HR_DAY          6
 #define HR_NIGHT        18
+#define SHOW_DATE       true
+#define IS_DATE_EN      true
+#define IS_SECOND       (!SHOW_DATE)
+
+// All time changes
+#define TICK_UNIT       (IS_SECOND ? (SECOND_UNIT | MINUTE_UNIT | HOUR_UNIT | DAY_UNIT) : (MINUTE_UNIT | HOUR_UNIT | DAY_UNIT))
 
 // Colors
 #ifdef PBL_COLOR
@@ -22,7 +26,7 @@
 #define FMT_TIME(mil)   (mil ? "%H:%M" : "%I:%M")
 #define FMT_TIME_LEN    sizeof("00:00")
 
-#define FMT_DATE        "%m %d"
+#define FMT_DATE(en)    (en ? "%m %d" : "%d %m")
 #define FMT_DATE_LEN    sizeof("00 00")
 
 #define FMT_SEC         "%S"
@@ -68,7 +72,7 @@ static GBitmap *s_pika;
 // === Helper variables ===
 
 static bool firstUpdate = true;
-static bool showDate = true;
+static bool showDate = SHOW_DATE;
 
 // === Helper methods ===
 
@@ -105,24 +109,13 @@ static void update_secdate(struct tm *tick_time) {
 
   // Update the buffer
   if (showDate)
-    strftime(date_buf, FMT_DATE_LEN, FMT_DATE, tick_time);
+    strftime(date_buf, FMT_DATE_LEN, FMT_DATE(IS_DATE_EN), tick_time);
   else
     strftime(sec_buf, FMT_SEC_LEN, FMT_SEC, tick_time);
 
   // Set the buffer
   text_layer_set_text(s_secdate_layer, showDate ? date_buf : sec_buf);
   layer_mark_dirty(text_layer_get_layer(s_secdate_layer));
-}
-
-static void show_seconds(void *data) {
-
-  // Get time
-  time_t temp = time(NULL);
-  struct tm *tick_time = localtime(&temp);
-
-  // Show seconds
-  showDate = false;
-  update_secdate(tick_time);
 }
 
 // === Handlers ===
@@ -163,25 +156,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
       layer_mark_dirty(s_root_layer);
     }
   }
-}
-
-static void acc_handler(AccelAxisType axis, int32_t direction) {
-
-  static AppTimer *timer_secdate = NULL;
-
-  // Get time
-  time_t temp = time(NULL);
-  struct tm *tick_time = localtime(&temp);
-
-  // Show date
-  showDate = true;
-  update_secdate(tick_time);
-
-  // === Reschedule seconds showing ===
-  // If timer exists, try rescheduling
-  if (!(timer_secdate && app_timer_reschedule(timer_secdate, TIMEOUT_SECDATE)))
-    // If it doesn't exist or already elapsed, schedule a new timer
-    timer_secdate = app_timer_register(TIMEOUT_SECDATE, show_seconds, NULL);
 }
 
 static void bt_handler(bool connected) {
@@ -298,7 +272,6 @@ static void init() {
 
   // Register services
   tick_timer_service_subscribe(TICK_UNIT, tick_handler);
-//   accel_tap_service_subscribe(acc_handler);
   bluetooth_connection_service_subscribe(bt_handler);
   battery_state_service_subscribe(bat_handler);
 
@@ -318,7 +291,6 @@ static void deinit() {
 
   // Unregister services
   tick_timer_service_unsubscribe();
-//   accel_tap_service_unsubscribe();
   bluetooth_connection_service_unsubscribe();
   battery_state_service_unsubscribe();
 }
