@@ -7,6 +7,7 @@
 #define SHOW_DATE       true
 #define IS_DATE_EN      true
 #define IS_SECOND       (!SHOW_DATE)
+#define VIBE_ON_DISCONNECT true
 
 // All time changes
 #define TICK_UNIT       (IS_SECOND ? (SECOND_UNIT | MINUTE_UNIT | HOUR_UNIT | DAY_UNIT) : (MINUTE_UNIT | HOUR_UNIT | DAY_UNIT))
@@ -73,8 +74,13 @@ static GBitmap *s_chg;
 static BitmapLayer *s_pika_layer;
 static GBitmap *s_pika;
 
+// === Windows ===
+
+static Window *window;
+
 // === Helper variables ===
 
+static bool configVibeOnDisconnect = true;
 static bool firstUpdate = true;
 static bool showDate = SHOW_DATE;
 const char * frDays[] = {
@@ -206,8 +212,9 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 static void bt_handler(bool connected) {
 
   // Vibrate
-  if (!firstUpdate)
+  if (!firstUpdate && configVibeOnDisconnect) {
     connected ? vibes_short_pulse() : vibes_double_pulse();
+  }
 
   // Set BT indicator
   layer_set_hidden(bitmap_layer_get_layer(s_bang_layer), connected);
@@ -223,6 +230,19 @@ static void bat_handler(BatteryChargeState charge) {
 }
 
 // === Setup ===
+
+static void inbox_received_handler(DictionaryIterator *received, void *context) {
+  // Config vibe on disconnect
+  Tuple *tuple = dict_find(received, MESSAGE_KEY_vibe_on_disconnect);
+  if (tuple) {
+    if (tuple->type == TUPLE_CSTRING) {
+      configVibeOnDisconnect = (strcmp(tuple->value->cstring, "true") == 0);
+    } else {
+      configVibeOnDisconnect = tuple->value->int8;
+    }
+    persist_write_bool(VIBE_ON_DISCONNECT, configVibeOnDisconnect);
+  }
+}
 
 static void main_window_load(Window *window) {
 
@@ -326,6 +346,14 @@ static void main_window_unload(Window *window) {
 }
 
 static void init() {
+
+  //Config
+  if (persist_exists(VIBE_ON_DISCONNECT)) {
+    configVibeOnDisconnect = persist_read_bool(VIBE_ON_DISCONNECT);
+  }
+
+  app_message_register_inbox_received(inbox_received_handler);
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());    //Largest possible input and output buffer sizes
 
   // Register services
   tick_timer_service_subscribe(TICK_UNIT, tick_handler);
