@@ -2,7 +2,10 @@
 
 Pokétch++ is a fork of metakirby5 Pokétch+
 
-## Added Features:
+## Last release features :
+- Add configuration for bluetooth vibration
+
+## Features:
 - Pebble Round support
 - Pebble Time color support
 - Color inversion for day/night
@@ -13,7 +16,6 @@ Pokétch++ is a fork of metakirby5 Pokétch+
 - Vibrate when bluetooth disconnected
 
 ## Future releases :
-- Add configuration for bluetooth vibration
 - Add steps count
 - Add configuration to switch day / night colors
 - Add configuration to show seconds instead of date
