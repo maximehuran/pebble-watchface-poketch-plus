@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "author": "maxime.huran@gmail.com",
+  "private": true,
+  "keywords": [
+    "pebble-app"
+  ],
+  "pebble": {
+    "sdkVersion": "3",
+    "resources": {
+      "media": [
+        {
+          "type": "png",
+          "name": "IMAGE_CHG",
+          "file": "images/chg_on.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_BANG",
+          "file": "images/bang.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_BAT",
+          "file": "images/bat.png"
+        },
+        {
+          "menuIcon": true,
+          "type": "png",
+          "name": "ICON",
+          "file": "images/icon.png"
+        },
+        {
+          "type": "font",
+          "characterRegex": "[0-9:]",
+          "name": "FONT_POKETCH_DIGITAL_70",
+          "file": "fonts/HMPoketchDigital.ttf"
+        },
+        {
+          "type": "font",
+          "characterRegex": "[0-9: ]",
+          "name": "FONT_POKETCH_DIGITAL_30",
+          "file": "fonts/HMPoketchDigital.ttf"
+        },
+        {
+          "type": "font",
+          "characterRegex": "[:0-9A-Za-z°]",
+          "name": "FONT_POKETCH_ALPHA_12",
+          "file": "fonts/HMPoketchAlpha.ttf"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_PIKA_BG",
+          "file": "images/pika.png"
+        }
+      ]
+    },
+    "projectType": "native",
+    "uuid": "0cc36677-1628-4e9e-ac38-f2c570c81d31",
+    "messageKeys": [
+      "vibe_on_disconnect"
+    ],
+    "enableMultiJS": false,
+    "displayName": "Pokétch++",
+    "watchapp": {
+      "onlyShownOnCommunication": false,
+      "hiddenApp": false,
+      "watchface": true
+    },
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite"
+    ],
+    "capabilities": [
+      "configurable"
+    ]
+  },
+  "name": "Pokétch++"
+}
